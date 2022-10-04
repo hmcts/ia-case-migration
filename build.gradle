@@ -214,6 +214,9 @@ dependencies {
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jackson
   implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jdk8', version: versions.jackson
 
+  implementation group: 'jakarta.persistence', name: 'jakarta.persistence-api', version: '2.2.3'
+
+
 
 
   implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: reformLoggingVersion
