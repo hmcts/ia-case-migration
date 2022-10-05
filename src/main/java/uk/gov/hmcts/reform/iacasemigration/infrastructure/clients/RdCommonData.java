@@ -6,14 +6,10 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-import uk.gov.hmcts.reform.iacasemigration.domain.entities.commondata.CaseFlag;
+import uk.gov.hmcts.reform.iacasemigration.domain.entities.commondata.CaseFlagDto;
 
-import java.net.URI;
 import java.util.Map;
 
-import static java.util.Collections.singletonMap;
 import static java.util.Objects.requireNonNull;
 
 @Service
@@ -38,7 +34,7 @@ public class RdCommonData {
         this.hmctsServiceId = hmctsServiceId;
     }
 
-    public CaseFlag retrieveStrategicCaseFlags() {
+    public CaseFlagDto retrieveStrategicCaseFlags() {
 //        final String serviceAuthorizationToken = serviceAuthTokenGenerator.generate();
 //        final String accessToken = userDetails.getAccessToken();
 
@@ -50,14 +46,14 @@ public class RdCommonData {
 
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(headers);
 
-        ResponseEntity<CaseFlag> response;
+        ResponseEntity<CaseFlagDto> response;
         try {
             response = restTemplate
                 .exchange(
                     cdaUrl + cdCaseFlagsPath + hmctsServiceId,
                     HttpMethod.GET,
                     requestEntity,
-                    CaseFlag.class
+                    CaseFlagDto.class
                 );
 
         } catch (RestClientResponseException e) {

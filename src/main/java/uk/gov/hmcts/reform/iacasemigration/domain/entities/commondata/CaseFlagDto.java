@@ -9,6 +9,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
-public class CaseFlag {
+public class CaseFlagDto {
     private List<Flag> flags;
 }
