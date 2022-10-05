@@ -1,10 +1,15 @@
 package uk.gov.hmcts.reform.iacasemigration.domain.entities;
 
+import lombok.Builder;
+import lombok.Value;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Value
+@Builder
 public class CaseFlagValue {
-    private String name;
+    private StrategicCaseFlagType name;
     private String status;
     private String flagCode;
     private LocalDateTime dateTimeCreated;
