@@ -46,7 +46,7 @@ public class CaseNameInternalMigration implements DataMigrationStep {
         asylumCase.read(CASE_NAME_HMCTS_INTERNAL);
     }
 
-    public String getCaseName(String appealReferenceNumberToBeConcatenated, String appellantFamilyNameToBeConcatenated) {
+    public static String getCaseName(String appealReferenceNumberToBeConcatenated, String appellantFamilyNameToBeConcatenated) {
 
         String appellantNameForDisplay = appealReferenceNumberToBeConcatenated + " " + appellantFamilyNameToBeConcatenated;
 

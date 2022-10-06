@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.iacasemigration.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Value;
 
@@ -7,5 +8,6 @@ import lombok.Value;
 @AllArgsConstructor
 public class CaseFlagDetail {
     private String id;
+    @JsonProperty("value")
     private CaseFlagValue caseFlagValue;
 }
