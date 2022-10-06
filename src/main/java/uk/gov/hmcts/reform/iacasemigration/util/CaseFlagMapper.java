@@ -62,7 +62,7 @@ public class CaseFlagMapper {
         List<CaseFlagPath> listOfPath = dtoFlagDetail.getPath().stream().map(p -> new CaseFlagPath(null, p)).collect(Collectors.toList());
 
         CaseFlagValue newStrategicFlagValue = CaseFlagValue.builder()
-            .name(strategicFlag.getReadableText())
+            .name(dtoFlagDetail.getName())
             .status(ACTIVE)
             .flagCode(dtoFlagDetail.getFlagCode())
             .dateTimeCreated(LocalDateTime.now())
