@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.iacasemigration.util;
 
 import uk.gov.hmcts.reform.iacasemigration.domain.entities.*;
+import uk.gov.hmcts.reform.iacasemigration.domain.entities.ccd.field.YesOrNo;
 import uk.gov.hmcts.reform.iacasemigration.domain.entities.commondata.Flag;
 import uk.gov.hmcts.reform.iacasemigration.domain.entities.commondata.FlagDetail;
 import uk.gov.hmcts.reform.iacasemigration.exception.MigrationException;
@@ -16,6 +17,7 @@ public class CaseFlagMapper {
 
     public static final String CASE_FLAG = "Case";
     public static final String PARTY_FLAG = "Party";
+    public static final String ACTIVE = "Active";
 
     private static final List<String> caseLevelFlagEnums = List.of(ANONYMITY.toString(), COMPLEX_CASE.toString()) ;
     private static final List<String> appellantLevelFlagsEnums =
@@ -50,28 +52,28 @@ public class CaseFlagMapper {
     }
 
     private static CaseFlagDetail buildStrategicCaseFlagDetail(List<FlagDetail> dtoLevelFlags, CaseFlagType tacticalCaseFlag) {
-        StrategicCaseFlagType strategicFlag = convertStrategicFlagType(tacticalCaseFlag);
+        StrategicCaseFlagType strategicFlag = convertToStrategicFlagType(tacticalCaseFlag);
         if (strategicFlag.toString().equals(StrategicCaseFlagType.UNKNOWN.toString())){
             throw new MigrationException("Couldn't map Tactical flag type to Strategic flag type === " + tacticalCaseFlag);
         }
-        FlagDetail dtoFlagDetail = dtoLevelFlags.stream().filter(f -> f.getName().equals(strategicFlag.getReadableText())).findAny()
+        FlagDetail dtoFlagDetail = dtoLevelFlags.stream().filter(f -> f.getFlagCode().equals(strategicFlag.getFlagCode())).findAny()
             .orElseThrow(() -> new MigrationException("Couldn't find Strategic flag type from REF DATA === " + strategicFlag));
 
         List<CaseFlagPath> listOfPath = dtoFlagDetail.getPath().stream().map(p -> new CaseFlagPath(null, p)).collect(Collectors.toList());
 
         CaseFlagValue newStrategicFlagValue = CaseFlagValue.builder()
-            .name(strategicFlag)
-            .status("Active")
+            .name(strategicFlag.getReadableText())
+            .status(ACTIVE)
             .flagCode(dtoFlagDetail.getFlagCode())
             .dateTimeCreated(LocalDateTime.now())
-            .hearingRelevant(dtoFlagDetail.getHearingRelevant())
+            .hearingRelevant(dtoFlagDetail.getHearingRelevant() ? YesOrNo.YES : YesOrNo.NO)
             .caseFlagPath(listOfPath)
             .build();
 
         return new CaseFlagDetail(null, newStrategicFlagValue);
     }
 
-    private static StrategicCaseFlagType convertStrategicFlagType(CaseFlagType tacticalCaseFlag) {
+    private static StrategicCaseFlagType convertToStrategicFlagType(CaseFlagType tacticalCaseFlag) {
         switch(tacticalCaseFlag.toString()) {
             case "anonymity":
                 return StrategicCaseFlagType.RRO_ANONYMISATION;

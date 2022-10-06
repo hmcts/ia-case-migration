@@ -10,10 +10,10 @@ import uk.gov.hmcts.reform.iacasemigration.domain.entities.CaseFlagType;
 import uk.gov.hmcts.reform.iacasemigration.domain.entities.StrategicCaseFlag;
 import uk.gov.hmcts.reform.iacasemigration.domain.entities.ccd.field.IdValue;
 import uk.gov.hmcts.reform.iacasemigration.domain.entities.commondata.CaseFlagDto;
+import uk.gov.hmcts.reform.iacasemigration.exception.MigrationException;
 import uk.gov.hmcts.reform.iacasemigration.infrastructure.clients.RdCommonData;
 import uk.gov.hmcts.reform.iacasemigration.util.CaseFlagMapper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,6 +31,8 @@ import static uk.gov.hmcts.reform.iacasemigration.util.CaseFlagMapper.PARTY_FLAG
 public class CaseFlagInternalMigration implements DataMigrationStep {
 
     private final RdCommonData rdCommonData;
+    private static final String APPELLANT = "Appellant";
+
 
     @Override
     public void apply(AsylumCase asylumCase, Long id) {
@@ -63,11 +65,37 @@ public class CaseFlagInternalMigration implements DataMigrationStep {
             StrategicCaseFlag appellantLevelFlags =
                 CaseFlagMapper.convertTacticalToStrategicFlags(caseFlagDto.getFlags().get(0), tacticalCaseFlagTypes, PARTY_FLAG);
 
+            appellantLevelFlags.setRoleOnCase(APPELLANT);
+            appellantLevelFlags.setPartyName(buildCaseName(asylumCase));
+
             log.info("Writing appellantLevelFlags: [{}]", appellantLevelFlags.getDetails());
             asylumCase.write(APPELLANT_LEVEL_FLAGS, appellantLevelFlags);
 
-            asylumCase.size();
+            log.info("Successfully migrated case flag for case: [{}]", id);
         }
+        else {
+            log.info("No tactical case flags exists for case: [{}]", id);
+        }
+
+        log.info("Finished processing case: [{}]", id);
+    }
+
+    private String buildCaseName(AsylumCase asylumCase) {
+        Optional<Object> appellantGivenNamesToBeConcatenated = asylumCase.read(APPELLANT_GIVEN_NAMES);
+        log.info("  first name: [{}]", appellantGivenNamesToBeConcatenated);
+        Optional<Object> appellantFamilyNameToBeConcatenated = asylumCase.read(APPELLANT_FAMILY_NAME);
+        log.info("  last name: [{}]", appellantFamilyNameToBeConcatenated);
+
+        if (appellantGivenNamesToBeConcatenated.isEmpty() || appellantFamilyNameToBeConcatenated.isEmpty()) {
+            throw new MigrationException("");
+        }
+
+        String expectedCaseName = null;
+
+        expectedCaseName = CaseNameInternalMigration.getCaseName(appellantGivenNamesToBeConcatenated.get().toString(),
+                                                                 appellantFamilyNameToBeConcatenated.get().toString());
+
+        return expectedCaseName;
     }
 
     private List<CaseFlagType> getExistingCaseFlagListElements
