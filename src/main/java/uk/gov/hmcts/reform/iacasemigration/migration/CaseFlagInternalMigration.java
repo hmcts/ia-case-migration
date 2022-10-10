@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.iacasemigration.migration;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.iacasemigration.domain.entities.AsylumCase;
 import uk.gov.hmcts.reform.iacasemigration.domain.entities.CaseFlag;
@@ -28,6 +29,7 @@ import static uk.gov.hmcts.reform.iacasemigration.util.CaseFlagMapper.PARTY_FLAG
 @RequiredArgsConstructor
 @Slf4j
 @ConditionalOnProperty(value = "migration.migrateCaseFlagsInternal", havingValue = "true")
+@Component
 public class CaseFlagInternalMigration implements DataMigrationStep {
 
     private final RdCommonData rdCommonData;
@@ -90,12 +92,8 @@ public class CaseFlagInternalMigration implements DataMigrationStep {
             throw new MigrationException("");
         }
 
-        String expectedCaseName = null;
-
-        expectedCaseName = CaseNameInternalMigration.getCaseName(appellantGivenNamesToBeConcatenated.get().toString(),
-                                                                 appellantFamilyNameToBeConcatenated.get().toString());
-
-        return expectedCaseName;
+        return CaseNameInternalMigration.getCaseName(appellantGivenNamesToBeConcatenated.get().toString(),
+                                                     appellantFamilyNameToBeConcatenated.get().toString());
     }
 
     private List<CaseFlagType> getExistingCaseFlagListElements

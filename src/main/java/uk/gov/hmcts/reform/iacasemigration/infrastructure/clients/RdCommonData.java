@@ -6,11 +6,12 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.iacasemigration.domain.entities.UserDetails;
 import uk.gov.hmcts.reform.iacasemigration.domain.entities.commondata.CaseFlagDto;
+import uk.gov.hmcts.reform.iacasemigration.domain.service.IdamService;
 
 import java.util.Map;
-
-import static java.util.Objects.requireNonNull;
 
 @Service
 @Slf4j
@@ -18,16 +19,20 @@ public class RdCommonData {
 
     private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
 
+    private final AuthTokenGenerator serviceAuthTokenGenerator;
+    private final IdamService idamService;
     private final RestTemplate restTemplate;
     private final String cdaUrl;
     private final String cdCaseFlagsPath;
     private final String hmctsServiceId;
 
-    public RdCommonData(RestTemplate restTemplate,
+    public RdCommonData(AuthTokenGenerator serviceAuthTokenGenerator, IdamService idamService, RestTemplate restTemplate,
                         @Value("${rd_common_data_api_url}") String cdaUrl,
                         @Value("${rd_common_data_case_flags_path}") String cdCaseFlagsPath,
                         @Value("${migration.hmctsid}") String hmctsServiceId
     ) {
+        this.serviceAuthTokenGenerator = serviceAuthTokenGenerator;
+        this.idamService = idamService;
         this.restTemplate = restTemplate;
         this.cdaUrl = cdaUrl;
         this.cdCaseFlagsPath = cdCaseFlagsPath;
@@ -35,14 +40,14 @@ public class RdCommonData {
     }
 
     public CaseFlagDto retrieveStrategicCaseFlags() {
-//        final String serviceAuthorizationToken = serviceAuthTokenGenerator.generate();
-//        final String accessToken = userDetails.getAccessToken();
+        final String serviceAuthorizationToken = serviceAuthTokenGenerator.generate();
+        final String accessToken = idamService.getUserToken();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
-//        headers.set(HttpHeaders.AUTHORIZATION, accessToken);
-//        headers.set(SERVICE_AUTHORIZATION, serviceAuthorizationToken);
+        headers.set(HttpHeaders.AUTHORIZATION, accessToken);
+        headers.set(SERVICE_AUTHORIZATION, serviceAuthorizationToken);
 
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(headers);
 
