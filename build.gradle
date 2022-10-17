@@ -207,7 +207,7 @@ dependencies {
   annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
   compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
 
-  implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.9'
+  implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.12'
 
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jackson
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jackson
