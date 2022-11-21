@@ -836,6 +836,9 @@ public enum AsylumCaseFieldDefinition {
     CASE_FLAGS(
         "caseFlags", new TypeReference<List<IdValue<CaseFlag>>>(){}),
 
+    LEGACY_CASE_FLAGS(
+        "legacyCaseFlags", new TypeReference<List<IdValue<CaseFlag>>>(){}),
+
     CASE_FLAG_ANONYMITY_EXISTS(
         "caseFlagAnonymityExists", new TypeReference<YesOrNo>() {}),
 
