@@ -10,7 +10,7 @@ import lombok.NonNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CaseFlag {
+public class LegacyCaseFlag {
 
     @NonNull
     CaseFlagType caseFlagType;
