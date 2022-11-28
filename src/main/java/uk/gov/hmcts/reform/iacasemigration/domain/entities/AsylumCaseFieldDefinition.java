@@ -834,16 +834,19 @@ public enum AsylumCaseFieldDefinition {
         "flagCaseAdditionalInformation", new TypeReference<String>(){}),
 
     CASE_FLAGS(
-        "caseFlags", new TypeReference<List<IdValue<CaseFlag>>>(){}),
+        "caseFlags", new TypeReference<List<IdValue<LegacyCaseFlag>>>(){}),
 
     LEGACY_CASE_FLAGS(
-        "legacyCaseFlags", new TypeReference<List<IdValue<CaseFlag>>>(){}),
+        "legacyCaseFlags", new TypeReference<List<IdValue<LegacyCaseFlag>>>(){}),
 
     CASE_FLAG_ANONYMITY_EXISTS(
         "caseFlagAnonymityExists", new TypeReference<YesOrNo>() {}),
 
     CASE_FLAG_ANONYMITY_ADDITIONAL_INFORMATION(
         "caseFlagAnonymityAdditionalInformation", new TypeReference<String>() {}),
+
+    MIGRATION_TEST_FIELD(
+        "migrationTestField", new TypeReference<String>() {}),
 
     CASE_FLAG_COMPLEX_CASE_EXISTS(
         "caseFlagComplexCaseExists", new TypeReference<YesOrNo>() {}),
