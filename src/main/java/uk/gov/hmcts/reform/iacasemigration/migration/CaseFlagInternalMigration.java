@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.iacasemigration.domain.entities.AsylumCase;
-import uk.gov.hmcts.reform.iacasemigration.domain.entities.LegacyCaseFlag;
 import uk.gov.hmcts.reform.iacasemigration.domain.entities.CaseFlagType;
+import uk.gov.hmcts.reform.iacasemigration.domain.entities.LegacyCaseFlag;
 import uk.gov.hmcts.reform.iacasemigration.domain.entities.StrategicCaseFlag;
 import uk.gov.hmcts.reform.iacasemigration.domain.entities.ccd.field.IdValue;
 import uk.gov.hmcts.reform.iacasemigration.domain.entities.commondata.CaseFlagDto;
@@ -46,7 +46,7 @@ public class CaseFlagInternalMigration implements DataMigrationStep {
     private void addCaseFlagInternal(AsylumCase asylumCase, Long id) {
         log.info("Attempting to add migrate tactical case flag for case: [{}]", id);
 
-        Optional<List<IdValue<LegacyCaseFlag>>> maybeExistingCaseFlags = asylumCase.read(CASE_FLAGS);
+        Optional<List<IdValue<LegacyCaseFlag>>> maybeExistingCaseFlags = asylumCase.read(LEGACY_CASE_FLAGS);
         log.info("Existing list of tactical case flags: [{}]", maybeExistingCaseFlags);
 
         if (maybeExistingCaseFlags.isPresent() && ! maybeExistingCaseFlags.get().isEmpty()) {
@@ -101,7 +101,7 @@ public class CaseFlagInternalMigration implements DataMigrationStep {
         requireNonNull(existingCaseFlags, "existingCaseFlags must not be null");
         return existingCaseFlags
             .stream()
-            .map(idValue -> idValue.getValue().getCaseFlagType())
+            .map(idValue -> idValue.getValue().getLegacyCaseFlagType())
             .collect(Collectors.toList());
     }
 }
