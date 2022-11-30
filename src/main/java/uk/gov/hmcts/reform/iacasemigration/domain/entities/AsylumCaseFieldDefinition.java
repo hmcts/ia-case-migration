@@ -834,7 +834,7 @@ public enum AsylumCaseFieldDefinition {
         "flagCaseAdditionalInformation", new TypeReference<String>(){}),
 
     CASE_FLAGS(
-        "caseFlags", new TypeReference<List<IdValue<LegacyCaseFlag>>>(){}),
+        "caseFlags", new TypeReference<List<IdValue<CaseFlag>>>(){}),
 
     LEGACY_CASE_FLAGS(
         "legacyCaseFlags", new TypeReference<List<IdValue<LegacyCaseFlag>>>(){}),
@@ -1552,7 +1552,7 @@ public enum AsylumCaseFieldDefinition {
         "hmctsCaseCategory", new TypeReference<String>(){}),
 
     CASE_LEVEL_FLAGS(
-        "caseLevelFlags", new TypeReference<StrategicCaseFlag>(){}),
+        "caseFlags", new TypeReference<StrategicCaseFlag>(){}),
 
     APPELLANT_LEVEL_FLAGS(
         "appellantLevelFlags", new TypeReference<StrategicCaseFlag>(){}),

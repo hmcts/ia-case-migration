@@ -7,19 +7,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.ToString;
-import lombok.Value;
 
 @Getter
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
-@Value
-public class LegacyCaseFlag {
+public class CaseFlag {
 
     @NonNull
-    CaseFlagType legacyCaseFlagType;
+    CaseFlagType caseFlagType;
     @NonNull
-    String legacyCaseFlagAdditionalInformation;
+    String caseFlagAdditionalInformation;
 
 }
