@@ -52,7 +52,7 @@ public class CaseFlagInternalMigration implements DataMigrationStep {
         if (maybeExistingCaseFlags.isPresent() && ! maybeExistingCaseFlags.get().isEmpty()) {
 
             log.info("Starting to migrate tactical case flags...");
-            CaseFlagDto caseFlagDto = rdCommonData.retrieveStrategicCaseFlags();
+            CaseFlagDto caseFlagDto = rdCommonData.getStrategicFlags();
 
             List<CaseFlagType> tacticalCaseFlagTypes = getExistingCaseFlagListElements(maybeExistingCaseFlags.get());
 

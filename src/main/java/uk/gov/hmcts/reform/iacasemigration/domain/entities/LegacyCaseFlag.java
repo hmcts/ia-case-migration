@@ -11,10 +11,10 @@ import lombok.Value;
 
 @Getter
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
-@Value
 public class LegacyCaseFlag {
 
     @NonNull

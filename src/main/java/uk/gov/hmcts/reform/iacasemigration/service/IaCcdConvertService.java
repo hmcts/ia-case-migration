@@ -19,9 +19,7 @@ public class IaCcdConvertService {
         mapper.registerModule(new JavaTimeModule());
 
         try {
-            AsylumCase asylumCase = mapper.convertValue(dataMap, AsylumCase.class);
-            return asylumCase;
-
+            return mapper.convertValue(dataMap, AsylumCase.class);
         } catch (Exception ex) {
             CcdDataDeserializationException ccdDeserializationException =
                 new CcdDataDeserializationException("Error occurred when mapping case data to AsylumCase", ex);
