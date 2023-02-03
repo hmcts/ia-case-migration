@@ -51,8 +51,6 @@ public class LegacyCaseFlagMigration implements DataMigrationStep {
             log.info("Migrating tactical case flags to legacyCaseField");
             asylumCase.write(LEGACY_CASE_FLAGS, legacyCaseFlags);
 
-            log.info("Writing empty list for caseFlags field");
-            asylumCase.write(CASE_FLAGS, new ArrayList<>());
             log.info("Successfully migrated case flag for case: [{}]", id);
         }
         else {

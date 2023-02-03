@@ -25,6 +25,7 @@ public class RdCommonData {
     private final String cdaUrl;
     private final String cdCaseFlagsPath;
     private final String hmctsServiceId;
+    private CaseFlagDto strategicFlags;
 
     public RdCommonData(AuthTokenGenerator serviceAuthTokenGenerator, IdamService idamService, RestTemplate restTemplate,
                         @Value("${rd_common_data_api_url}") String cdaUrl,
@@ -37,6 +38,14 @@ public class RdCommonData {
         this.cdaUrl = cdaUrl;
         this.cdCaseFlagsPath = cdCaseFlagsPath;
         this.hmctsServiceId = hmctsServiceId;
+    }
+
+    public CaseFlagDto getStrategicFlags() {
+        if(strategicFlags != null && strategicFlags.getFlags().size() > 0) {
+            return strategicFlags;
+        } else {
+            return retrieveStrategicCaseFlags();
+        }
     }
 
     public CaseFlagDto retrieveStrategicCaseFlags() {
@@ -68,7 +77,9 @@ public class RdCommonData {
             );
         }
 
-        log.info("Http status received from D-Common-Data-Api; {}", response.getStatusCodeValue());
+        log.info("Http status received from RD-Common-Data-Api; {}", response.getStatusCodeValue());
+
+        strategicFlags = response.getBody();
 
         return response.getBody();
     }
