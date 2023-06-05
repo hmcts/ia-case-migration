@@ -56,16 +56,24 @@ public class CaseFlagInternalMigration implements DataMigrationStep {
 
             List<CaseFlagType> tacticalCaseFlagTypes = getExistingCaseFlagListElements(maybeExistingCaseFlags.get());
 
+            List<IdValue<LegacyCaseFlag>> legacyCaseFlags = maybeExistingCaseFlags.get();
+
             log.info("processing caseLevelFlags...");
             StrategicCaseFlag caseLevelFlags =
-                CaseFlagMapper.convertTacticalToStrategicFlags(caseFlagDto.getFlags().get(0), tacticalCaseFlagTypes, CASE_FLAG);
+                CaseFlagMapper.convertTacticalToStrategicFlags(caseFlagDto.getFlags().get(0),
+                                                               legacyCaseFlags,
+                                                               tacticalCaseFlagTypes,
+                                                               CASE_FLAG);
 
             log.info("Writing caseLevelFlags: [{}]", caseLevelFlags.getDetails());
             asylumCase.write(CASE_LEVEL_FLAGS, caseLevelFlags);
 
             log.info("processing appellantLevelFlags...");
             StrategicCaseFlag appellantLevelFlags =
-                CaseFlagMapper.convertTacticalToStrategicFlags(caseFlagDto.getFlags().get(0), tacticalCaseFlagTypes, PARTY_FLAG);
+                CaseFlagMapper.convertTacticalToStrategicFlags(caseFlagDto.getFlags().get(0),
+                                                               legacyCaseFlags,
+                                                               tacticalCaseFlagTypes,
+                                                               PARTY_FLAG);
 
             appellantLevelFlags.setRoleOnCase(APPELLANT);
             appellantLevelFlags.setPartyName(buildCaseName(asylumCase));

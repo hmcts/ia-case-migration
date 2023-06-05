@@ -14,6 +14,7 @@ public class CaseFlagValue {
     private String name;
     private String status;
     private String flagCode;
+    private String flagComment;
     private LocalDateTime dateTimeCreated;
     private YesOrNo hearingRelevant;
     @JsonProperty("path")
