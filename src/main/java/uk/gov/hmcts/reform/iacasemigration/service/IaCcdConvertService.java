@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.iacasemigration.service;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
@@ -20,9 +19,7 @@ public class IaCcdConvertService {
         mapper.registerModule(new JavaTimeModule());
 
         try {
-            AsylumCase asylumCase = mapper.convertValue(dataMap, AsylumCase.class);
-            return asylumCase;
-
+            return mapper.convertValue(dataMap, AsylumCase.class);
         } catch (Exception ex) {
             CcdDataDeserializationException ccdDeserializationException =
                 new CcdDataDeserializationException("Error occurred when mapping case data to AsylumCase", ex);

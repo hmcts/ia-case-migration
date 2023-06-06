@@ -836,11 +836,17 @@ public enum AsylumCaseFieldDefinition {
     CASE_FLAGS(
         "caseFlags", new TypeReference<List<IdValue<CaseFlag>>>(){}),
 
+    LEGACY_CASE_FLAGS(
+        "legacyCaseFlags", new TypeReference<List<IdValue<LegacyCaseFlag>>>(){}),
+
     CASE_FLAG_ANONYMITY_EXISTS(
         "caseFlagAnonymityExists", new TypeReference<YesOrNo>() {}),
 
     CASE_FLAG_ANONYMITY_ADDITIONAL_INFORMATION(
         "caseFlagAnonymityAdditionalInformation", new TypeReference<String>() {}),
+
+    MIGRATION_TEST_FIELD(
+        "migrationTestField", new TypeReference<String>() {}),
 
     CASE_FLAG_COMPLEX_CASE_EXISTS(
         "caseFlagComplexCaseExists", new TypeReference<YesOrNo>() {}),
@@ -1544,6 +1550,12 @@ public enum AsylumCaseFieldDefinition {
 
     HMCTS_CASE_CATEGORY(
         "hmctsCaseCategory", new TypeReference<String>(){}),
+
+    CASE_LEVEL_FLAGS(
+        "caseFlags", new TypeReference<StrategicCaseFlag>(){}),
+
+    APPELLANT_LEVEL_FLAGS(
+        "appellantLevelFlags", new TypeReference<StrategicCaseFlag>(){}),
 
     ;
 
