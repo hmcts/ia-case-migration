@@ -16,10 +16,17 @@ def gradleBuilder = new GradleBuilder(this, product)
 
 def branchesToSync = ['demo']
 
+def secrets = [
+  'ia-${env}': [
+    secret('ia-config-validator-secret', 'IA_CONFIG_VALIDATOR_SECRET')
+  ]
+]
+
 withPipeline(type, product, component) {
     enableAksStagingDeployment()
     disableLegacyDeployment()
     nonServiceApp()
     syncBranchesWithMaster(branchesToSync)
+    loadVaultSecrets(secrets)
 }
 

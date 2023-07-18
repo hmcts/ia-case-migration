@@ -11,4 +11,12 @@ def type = "java"
 def product = "ia"
 def component = "case-migration"
 
-withNightlyPipeline(type, product, component) {}
+def secrets = [
+  'ia-${env}': [
+    secret('ia-config-validator-secret', 'IA_CONFIG_VALIDATOR_SECRET')
+  ]
+]
+
+withNightlyPipeline(type, product, component) {
+  loadVaultSecrets(secrets)
+}
